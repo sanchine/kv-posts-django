@@ -1,0 +1,19 @@
+{% extends 'main_app/base.html' %}
+{% load bootstrap4 %}
+
+{% block page_header %}
+    <h2>Войдите в систему.</h2>
+{% endblock page_header %}
+
+{% block content %}
+    <form class="form" method="post" action="{% url 'users:login' %}">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button class="btn btn-primary" type="submit">Вход в систему</button>
+        {% endbuttons %}
+
+        <input type="hidden" name="next" value="{% url 'main_app:index' %}">
+    </form>
+
+{% endblock content %}

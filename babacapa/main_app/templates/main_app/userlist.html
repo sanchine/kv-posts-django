@@ -1,0 +1,23 @@
+{% extends 'main_app/base.html' %}
+
+{% block page_header %}
+    <div class="d-flex justify-content-between">
+        <h2>Пользователи</h2>
+    </div>
+{% endblock page_header %}
+
+{% block content %}
+    <div>
+
+        {% for user in users %}
+            <div class="d-flex justify-content-between mt-4 p-4 border border-secondary border-radius-2 rounded rounded-3 text-secondary">
+                <h4>{{ user.username }}</h4>
+                <a class="border border-primary p-3 rounded rounded-3 text-secondary" href="{% url 'main_app:owned_posts' user.id %}">Перейти к постам</a>
+            </div>
+        {% empty %}
+            <p>Записи отсутствуют в базе данных.</p>
+        {% endfor %}
+
+
+    </div>
+{% endblock content %}

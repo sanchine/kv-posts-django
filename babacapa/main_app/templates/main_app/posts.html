@@ -1,0 +1,44 @@
+{% extends 'main_app/base.html' %}
+{% load thumbnail %}
+
+{% block page_header %}
+    <div class="d-flex justify-content-between">
+        <h2>Посты</h2>
+        <a style="border-radius: 10px; color: black;" class="nav-link border border-primary" href="{% url 'main_app:new_post' %}">Создание поста</a>
+    </div>
+{% endblock page_header %}
+
+{% block content %}
+    <div>
+
+        {% for post in posts %}
+            <a href="{% url 'main_app:post' post.id %}" style="color: black; text-decoration: none;">
+                <div class="card mb-3">
+                    <h4 class="card-header">
+                        {{ post.owner }}
+                        <small>{{ post.datetime }}</small>
+                    </h4>
+                    <div class="card-body">
+                        {{ post|linebreaks }}
+                        {% thumbnail post.image "960x330" crop="center" upscale=True  as im %}
+                            <div style="padding: 10px; border: 1px solid grey;">
+                                <img class="card-img my-2" src="{{ im.url }}">
+                            </div>
+                        {% endthumbnail %}
+                        {% if post.audio %}
+                            <div class="d-flex align-items-center mt-4 border border-warning p-4">
+                                <h6 style="border-right: .4px grey solid; margin-right: 45px;">{{ post.audio.name }}</h6>
+                                <audio class="center" controls="controls" style="width: 950px;">
+                                    <source src="{{ post.audio.url }}" type="audio/mpeg" />
+                                </audio>
+                            </div>
+                        {% endif %}
+                        <h6>Кол-во лайков: {{ post.like_count }}</h6>
+                    </div>
+                </div>
+            </a>
+        {% empty %}
+            <p>Записи отсутствуют в базе данных.</p>
+        {% endfor %}
+    </div>
+{% endblock content %}

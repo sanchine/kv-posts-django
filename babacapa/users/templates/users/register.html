@@ -1,0 +1,23 @@
+{% extends 'main_app/base.html' %}
+{% load bootstrap4 %}
+
+{% block page_header %}
+    <div class="d-flex justify-content-between">
+        <h2>Регистрация</h2>
+    </div>
+{% endblock page_header %}
+
+
+{% block content %}
+
+    <form method="post" action="{% url 'users:register' %}">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button class="btn btn-primary" type="submit">Регистрация</button>
+            <input type="hidden" name="next" value="{% url 'main_app:index' %}" />
+        {% endbuttons %}
+
+    </form>
+
+{% endblock content %}

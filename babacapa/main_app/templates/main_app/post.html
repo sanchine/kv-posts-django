@@ -1,0 +1,44 @@
+{% extends 'main_app/base.html' %}
+{% load thumbnail %}
+
+{% block page_header %}
+    <div class="d-flex justify-content-between">
+        <h2>Пост</h2>
+        {% if post.owner == user or user.username == "admin" %}
+            <ul class="d-flex">
+                <a style="border-radius: 10px; color: black;" class="nav-link border border-primary" href="{% url 'main_app:edit_post' post.id %}">Редактировать</a>
+                <a style="border-radius: 10px; color: black;" class="nav-link border border-primary ml-3" href="{% url 'main_app:delete_post' post.id %}">Удалить</a>
+            </ul>
+        {% endif %}
+    </div>
+{% endblock page_header %}
+
+{% block content %}
+    <div>
+        <div class="card mb-3">
+            <h4 class="card-header">
+                <a style="text-decoration: none; color: black;" href="{% url 'main_app:owned_posts' post.owner.id %}">{{ post.owner }}</a>
+                <small>{{ post.datetime }}</small>
+            </h4>
+            <div class="card-body">
+                {{ post.text|linebreaks }}
+                {% thumbnail post.image "x500" crop="center" upscale=True as im %}
+                    <div style="padding: 10px; border: 1px solid grey;">
+                        <img class="card-img my-2" src="{{ im.url }}">
+                    </div>
+                {% endthumbnail %}
+                {% if post.audio %}
+                    <div class="d-flex align-items-center mt-4 border border-warning p-4">
+                        <h6 style="border-right: .4px grey solid; margin-right: 45px;">{{ post.audio.name }}</h6>
+                        <audio class="center" controls="controls" style="width: 950px;">
+                            <source src="{{ post.audio.url }}" type="audio/mpeg" />
+                        </audio>
+                    </div>
+                {% endif %}
+                    <a href="{% url 'main_app:like_post' post.id %}">Понравилось</a>
+                    <h6>Кол-во лайков: {{ post.like_count }}</h6>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
